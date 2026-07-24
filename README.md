@@ -1,6 +1,6 @@
 Quant Edge Solutions (QES)
-We don't only trade Red envelope events. We also fade the Algo behind the orange ones.
-🎯 What Is QES?
+We don't only trade Red folder events. We also fade the Algo behind the orange ones. 🎯
+What Is QES?
 QES is a proprietary news-trading framework built by Leon Jonas — a systematic trader and quant strategist — in collaboration with AI (Claude, DeepSeek). It transforms economic data releases and central bank decisions into precise, rules-based trade entries with institutional-grade backtesting behind every parameter.
 QES systems are traded personally. This repository documents the architecture and live track record — it is not a storefront.
 📦 System Overview
@@ -20,14 +20,12 @@ Quant Edge Suite
 Bundled multi-strategy package
 Quantum Edge Brain
 Flagship tier — full suite plus AI-assisted decision layer
+🔬 Also in active forward-testing
+Thursday Edge (USD macro basket, ICSA-driven). Historical backtest data for this one didn't hold up under independent verification and was withdrawn; currently monitored personally with reduced risk, no confirmed edge yet. Not included in the System Overview above pending real forward-test results.
 🧠 Core Philosophy
 Markets move on deviation from consensus, not on the headline itself — QES is built to isolate that deviation systematically, rather than react to it.
-Every system runs its own independently validated model, calibrated to the specific event type and pairs it trades.
-Risk controls are built in at every layer, including volatility-based filters that stand down the system entirely under abnormal market conditions.
+Every system runs its own independently validated model, calibrated to the specific event type and pairs it trades. Risk controls are built in at every layer, including volatility-based filters that stand down the system entirely under abnormal market conditions.
 Full methodology, scoring logic, and entry rules are proprietary and not published in this repository.
-📊 Live Competition
-This system is currently being battle-tested live in the Top One Trader "Battle for the Belt" — a $100k account, trading from July 6–17, 2026.
-All trades are logged transparently.
 🛠️ Tech Stack
 Python (backtesting & signal generation)
 Google Sheets API (trade logging)
