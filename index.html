@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
+    <title>Quant Edge Solutions · QES</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,600&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'DM Sans', sans-serif;
+            font-size: 15px;
+            line-height: 1.7;
+            background-color: var(--bg);
+            color: var(--text);
+            transition: background-color 0.3s ease, color 0.2s ease;
+            padding-bottom: 70px;
+            min-height: 100vh;
+        }
+        :root {
+            --bg: #0f1e35;
+            --text: #f0f4fa;
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --card-border: rgba(255, 255, 255, 0.06);
+            --accent-1: #7C6A9E;
+            --accent-2: #D4C4A8;
+            --accent-3: #C9A87C;
+            --heading-color: #f5f0eb;
+            --nav-bg: rgba(15, 30, 53, 0.92);
+            --nav-border: rgba(255, 255, 255, 0.06);
+            --disclaimer-color: rgba(255, 255, 255, 0.35);
+            --good: #7C9E7A;
+            --muted: rgba(240, 244, 250, 0.45);
+            --toggle-bg: #2a3a55;
+        }
+        [data-theme="light"] {
+            --bg: #f8f6f2;
+            --text: #1a1a1a;
+            --card-bg: #ffffff;
+            --card-border: #dcd6cc;
+            --accent-1: #6B5B8A;
+            --accent-2: #8A7A5A;
+            --accent-3: #B5986A;
+            --heading-color: #1a1a1a;
+            --nav-bg: rgba(248, 246, 242, 0.95);
+            --nav-border: #dcd6cc;
+            --disclaimer-color: rgba(26, 26, 26, 0.4);
+            --good: #5A7A58;
+            --muted: rgba(26, 26, 26, 0.5);
+            --toggle-bg: #dcd6cc;
+        }
+        .container { max-width: 720px; margin: 0 auto; padding: 0 18px 24px; }
+        h1, h2, h3 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 600;
+            color: var(--heading-color);
+            letter-spacing: -0.01em;
+        }
+        h1 { font-size: 34px; line-height: 1.15; }
+        h2 { font-size: 26px; line-height: 1.2; margin-bottom: 0.5rem; }
+        h3 { font-size: 20px; line-height: 1.3; margin-bottom: 0.4rem; }
+        .eyebrow {
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--accent-1);
+            margin-bottom: 0.25rem;
+            display: block;
+        }
+        .text-muted { color: var(--muted); }
+        p { margin-bottom: 0.75rem; }
+        p:last-child { margin-bottom: 0; }
+
+        .app-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 18px;
+            background: var(--nav-bg);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--nav-border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            transition: background 0.3s ease;
+        }
+        .app-brand { display: flex; flex-direction: column; line-height: 1.2; }
+        .brand-name {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            font-size: 20px;
+            color: var(--heading-color);
+            letter-spacing: -0.02em;
+        }
+        .brand-sub {
+            font-size: 9px;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--accent-1);
+            font-weight: 600;
+        }
+        .toggle-wrapper { display: flex; align-items: center; gap: 8px; }
+        .toggle-label {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            font-weight: 600;
+            color: var(--text);
+            opacity: 0.6;
+        }
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 44px;
+            height: 24px;
+            flex-shrink: 0;
+        }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            inset: 0;
+            background-color: var(--toggle-bg);
+            transition: 0.3s;
+            border-radius: 30px;
+        }
+        .slider::before {
+            content: "";
+            position: absolute;
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background: #fff;
+            transition: 0.3s;
+            border-radius: 50%;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.15);
+        }
+        input:checked + .slider { background-color: var(--accent-1); }
+        input:checked + .slider::before { transform: translateX(20px); }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 18px;
+            padding: 24px 20px;
+            margin-bottom: 20px;
+            transition: background 0.3s ease, border 0.3s ease;
+        }
+        .product-card[id] {
+            scroll-margin-top: 90px;
+        }
+        .card-hero {
+            text-align: center;
+            padding: 40px 20px 32px;
+        }
+        .brand-tag {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            color: var(--accent-1);
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            display: block;
+        }
+        .card-hero h1 { margin-bottom: 6px; }
+        .card-hero .subtitle {
+            font-size: 18px;
+            font-weight: 400;
+            color: var(--text);
+            opacity: 0.75;
+            margin-top: 4px;
+        }
+        .card-hero .transformation {
+            font-size: 15px;
+            font-weight: 500;
+            color: var(--accent-2);
+            margin-top: 12px;
+            padding: 10px 16px;
+            background: var(--card-bg);
+            border-radius: 40px;
+            display: inline-block;
+            border: 1px solid var(--card-border);
+            max-width: 90%;
+        }
+        .card-hero .for-whom {
+            font-size: 13px;
+            opacity: 0.65;
+            margin-top: 14px;
+            max-width: 480px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .card-hero .founder {
+            margin-top: 14px;
+            font-size: 11px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--accent-2);
+            font-weight: 600;
+        }
+        .tagline-box {
+            text-align: center;
+            font-family: 'Playfair Display', serif;
+            font-size: 22px;
+            font-weight: 600;
+            color: var(--heading-color);
+            padding: 10px 0 4px;
+            border-top: 1px solid var(--card-border);
+            border-bottom: 1px solid var(--card-border);
+            margin: 6px 0 12px;
+        }
+        .tagline-box .highlight { color: var(--accent-3); }
+
+        .tier-section { margin-bottom: 28px; }
+        .tier-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 22px;
+            font-weight: 600;
+            color: var(--heading-color);
+            border-bottom: 2px solid var(--accent-1);
+            padding-bottom: 6px;
+            margin-bottom: 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+        .tier-title .badge {
+            font-family: 'DM Sans', sans-serif;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--accent-2);
+            opacity: 0.7;
+        }
+        .product-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+        .product-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 14px;
+            padding: 16px 14px;
+            text-align: center;
+            transition: border 0.2s ease, transform 0.15s ease;
+            text-decoration: none;
+            color: var(--text);
+        }
+        .product-card:hover {
+            border-color: var(--accent-1);
+            transform: translateY(-2px);
+        }
+        .product-card .p-name {
+            font-family: 'Playfair Display', serif;
+            font-weight: 600;
+            font-size: 17px;
+            color: var(--heading-color);
+            margin-bottom: 2px;
+        }
+        .product-card .p-price {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--accent-2);
+            margin-top: 4px;
+        }
+        .product-card .p-price .strike {
+            font-size: 13px;
+            font-weight: 400;
+            color: var(--muted);
+            text-decoration: line-through;
+            margin-right: 6px;
+        }
+        .product-card .p-status {
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--good);
+        }
+        .product-card .p-desc {
+            font-size: 12px;
+            opacity: 0.7;
+            margin-top: 4px;
+        }
+        .product-card.full-width {
+            grid-column: 1 / -1;
+            max-width: 360px;
+            margin: 0 auto;
+        }
+
+        .btn-gumroad {
+            display: inline-block;
+            background: var(--accent-1);
+            color: #fff;
+            font-weight: 600;
+            padding: 10px 28px;
+            border-radius: 40px;
+            text-decoration: none;
+            font-size: 15px;
+            transition: opacity 0.2s;
+            margin-top: 6px;
+            border: none;
+            cursor: pointer;
+        }
+        .btn-gumroad:hover { opacity: 0.85; }
+
+        .feature-list {
+            list-style: none;
+            padding: 0;
+        }
+        .feature-list li {
+            padding-left: 22px;
+            position: relative;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+        .feature-list li::before {
+            content: "▸";
+            position: absolute;
+            left: 0;
+            color: var(--accent-2);
+            font-weight: 700;
+        }
+
+        .contact-row {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 12px;
+        }
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+            color: var(--text);
+            text-decoration: none;
+            padding: 10px 14px;
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            transition: border 0.2s ease;
+        }
+        .contact-item:hover { border-color: var(--accent-1); }
+        .contact-item .c-icon { font-size: 16px; }
+        .contact-item .c-label {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--muted);
+            display: block;
+        }
+        .contact-item .c-value {
+            font-weight: 600;
+            color: var(--heading-color);
+        }
+
+        .disclaimer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--nav-bg);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border-top: 1px solid var(--nav-border);
+            padding: 10px 16px;
+            font-size: 10px;
+            line-height: 1.5;
+            color: var(--disclaimer-color);
+            text-align: center;
+            z-index: 200;
+            transition: background 0.3s ease, color 0.3s ease;
+            letter-spacing: 0.01em;
+        }
+        .disclaimer strong { color: var(--accent-1); font-weight: 600; }
+
+        @media (max-width: 480px) {
+            h1 { font-size: 28px; }
+            h2 { font-size: 22px; }
+            .product-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+            .product-card .p-name { font-size: 15px; }
+            .tagline-box { font-size: 18px; }
+            .card { padding: 18px 14px; }
+            .card-hero { padding: 28px 14px 20px; }
+            .card-hero .transformation { font-size: 13px; padding: 8px 14px; }
+        }
+        @media (max-width: 380px) {
+            .product-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="app-header">
+        <div class="app-brand">
+            <span class="brand-name">Quant Edge Solutions</span>
+            <span class="brand-sub">LJGOC2033 · Catalyst Trader</span>
+        </div>
+        <div class="toggle-wrapper">
+            <span class="toggle-label">Light</span>
+            <label class="switch" aria-label="Toggle theme">
+                <input type="checkbox" id="themeToggle" checked />
+                <span class="slider"></span>
+            </label>
+            <span class="toggle-label">Dark</span>
+        </div>
+    </header>
+
+    <main class="container">
+
+        <!-- HERO WITH OFFER OF TRANSFORMATION -->
+        <section class="card card-hero">
+            <span class="brand-tag">⚡ Verified Macro Execution Frameworks</span>
+            <h1>Quant Edge Solutions</h1>
+            <div class="subtitle">We did the work so you don't have to.</div>
+
+            <!-- OFFER OF TRANSFORMATION -->
+            <div class="transformation">
+                From guessing to precision. From emotional exits to systematic execution.
+            </div>
+
+            <!-- WHO IT'S FOR -->
+            <div class="for-whom">
+                Built for traders who rely on technical analysis — ICT, chart patterns, indicators — <br />
+                and want to add a <strong>data-driven edge</strong> to their existing regime.
+            </div>
+
+            <div class="founder">LJGOC2033 · Founded 2026</div>
+        </section>
+
+        <!-- TAGLINE -->
+        <div class="card" style="text-align:center; padding:14px 12px;">
+            <div class="tagline-box">
+                <span class="highlight">We don't only trade Red folder events.</span><br />
+                We also fade the Algo behind the orange ones.
+            </div>
+        </div>
+
+        <!-- START HERE - $1.99 STARTER KIT -->
+        <section class="card" style="border: 2px solid var(--accent-3); text-align:center;">
+            <span class="eyebrow">New to QES? Start Here</span>
+            <h2>Macro Trading Starter Kit</h2>
+            <p style="font-size:14px; opacity:0.85;">
+                Charts &amp; Rules Edition — real trade case studies, the evolution from multi-day holds to a short-term edge, and the core playbook principles. The lowest-friction way to see if QES is for you.
+            </p>
+            <div class="p-price" style="font-size:20px; margin: 10px 0 4px;">
+                <span class="strike">$9.99</span> $1.99
+            </div>
+            <a class="btn-gumroad" href="https://leonardos405.gumroad.com/l/gukdm" target="_blank">Get the Starter Kit →</a>
+        </section>
+
+        <!-- ENTRY TIER -->
+        <section class="tier-section">
+            <div class="tier-title">
+                <span>Entry — Analyst</span>
+                <span class="badge">Single‑event · US Focus</span>
+            </div>
+            <div class="product-grid">
+                <a id="cpi-edge" class="product-card" href="https://leonardos405.gumroad.com/l/jguxri" target="_blank">
+                    <div class="p-name">US CPI Edge</div>
+                    <div class="p-desc">EUR/USD + USD/JPY</div>
+                    <div class="p-price">$147</div>
+                    <div class="p-status">● LIVE</div>
+                </a>
+                <a id="nfp-edge" class="product-card" href="https://leonardos405.gumroad.com/l/iqjepd" target="_blank">
+                    <div class="p-name">NFP Edge</div>
+                    <div class="p-desc">EUR/USD + USD/JPY</div>
+                    <div class="p-price">$159</div>
+                    <div class="p-status">● LIVE</div>
+                </a>
+                <a id="central-banks-edge" class="product-card full-width" href="https://leonardos405.gumroad.com/l/lvlsno" target="_blank">
+                    <div class="p-name">Central Banks Edge</div>
+                    <div class="p-desc">6 Central Banks · Scoring System</div>
+                    <div class="p-price"><span class="strike">$179</span> $147</div>
+                    <div class="p-status">● LIVE · Cohort 1</div>
+                </a>
+            </div>
+        </section>
+
+        <!-- BRIDGE TIER -->
+        <section class="tier-section">
+            <div class="tier-title">
+                <span>Bridge — Analyst+</span>
+                <span class="badge">Bundle · US Focus</span>
+            </div>
+            <div class="product-grid">
+                <a id="starter-bundle" class="product-card full-width" href="https://leonardos405.gumroad.com/l/ohuci" target="_blank">
+                    <div class="p-name">Macro Starter Bundle</div>
+                    <div class="p-desc">US CPI Edge + NFP Edge</div>
+                    <div class="p-price"><span class="strike">$306</span> $199</div>
+                    <div class="p-status">● LIVE</div>
+                </a>
+            </div>
+        </section>
+
+        <!-- MID TIER -->
+        <section class="tier-section">
+            <div class="tier-title">
+                <span>Mid — Strategist</span>
+                <span class="badge">Flagship · Multi‑Economy</span>
+            </div>
+            <div class="product-grid">
+                <a id="cpi-premium" class="product-card" href="https://leonardos405.gumroad.com/l/hwkqi" target="_blank">
+                    <div class="p-name">CPI Premium</div>
+                    <div class="p-desc">4 Economies</div>
+                    <div class="p-price">$497</div>
+                    <div class="p-status">● LIVE</div>
+                </a>
+                <a id="employment-edge" class="product-card" href="https://leonardos405.gumroad.com/l/hbavy" target="_blank">
+                    <div class="p-name">Global Employment Edge</div>
+                    <div class="p-desc">4 Economies</div>
+                    <div class="p-price">$497</div>
+                    <div class="p-status">● LIVE</div>
+                </a>
+            </div>
+        </section>
+
+        <!-- HIGH TIER -->
+        <section class="tier-section">
+            <div class="tier-title">
+                <span>High — Portfolio</span>
+                <span class="badge">Bundle · All Flagships</span>
+            </div>
+            <div class="product-grid">
+                <a id="edge-suite" class="product-card full-width" href="https://leonardos405.gumroad.com/l/cpwxyh" target="_blank">
+                    <div class="p-name">Quant Edge Suite</div>
+                    <div class="p-desc">CPI Premium + Global Employment + Central Banks</div>
+                    <div class="p-price"><span class="strike">$1,141</span> $997</div>
+                    <div class="p-status">● LIVE</div>
+                </a>
+            </div>
+        </section>
+
+        <!-- FLAGSHIP TIER -->
+        <section class="tier-section">
+            <div class="tier-title">
+                <span>Flagship — Partner</span>
+                <span class="badge">Suite + AI War Room + Cohort</span>
+            </div>
+            <div class="product-grid">
+                <a id="quantum-brain" class="product-card full-width" href="https://leonardos405.gumroad.com/l/qhfkpl" target="_blank">
+                    <div class="p-name">Quantum Edge Brain</div>
+                    <div class="p-desc">Suite + AI War Room + Priority Support + Cohort for Life</div>
+                    <div class="p-price">$1,997</div>
+                    <div class="p-status">● LIVE</div>
+                </a>
+            </div>
+        </section>
+
+        <!-- VERIFIED TRACK RECORD -->
+        <section class="card" style="border-left: 3px solid var(--good);">
+            <span class="eyebrow">Proof, Not Promises</span>
+            <h2>Verified Track Record</h2>
+            <p style="font-size:14px; opacity:0.85; margin-bottom:14px;">
+                Every trade we call is posted publicly — entries, charts, and outcomes — before we ever ask you to trust a backtest number.
+            </p>
+            <div class="product-grid">
+                <a class="product-card" href="https://www.youtube.com/@LJGOCTradingConcepts" target="_blank">
+                    <div class="p-name">YouTube</div>
+                    <div class="p-desc">Trade breakdowns & PNL</div>
+                    <div class="p-status">● LJGOC Trading Concepts</div>
+                </a>
+                <a class="product-card" href="https://www.tiktok.com/@ljgoc2033" target="_blank">
+                    <div class="p-name">TikTok</div>
+                    <div class="p-desc">Live calls & results</div>
+                    <div class="p-status">● @ljgoc2033</div>
+                </a>
+            </div>
+        </section>
+
+        <!-- WHY QES -->
+        <section class="card">
+            <span class="eyebrow">The Edge</span>
+            <h2>Why Quant Edge Solutions</h2>
+            <ul class="feature-list">
+                <li><strong>Delta‑driven.</strong> We trade the surprise, not the headline.</li>
+                <li><strong>Institutional fade.</strong> We join the algos, not the crowd.</li>
+                <li><strong>VIX‑filtered.</strong> We stand down entirely when volatility conditions turn hostile.</li>
+                <li><strong>Validated, not vibes.</strong> Every model is tested against real historical releases before it ever trades live capital.</li>
+                <li><strong>Radical transparency.</strong> Every call — win or loss — posted publicly, not cherry-picked.</li>
+            </ul>
+        </section>
+
+        <!-- CONNECT -->
+        <section class="card">
+            <span class="eyebrow">Get In Touch</span>
+            <h2>Connect</h2>
+            <div class="contact-row">
+                <a class="contact-item" href="https://x.com/leonjonas407" target="_blank">
+                    <span class="c-icon">𝕏</span>
+                    <span>
+                        <span class="c-label">X (Twitter)</span>
+                        <span class="c-value">@leonjonas407</span>
+                    </span>
+                </a>
+                <a class="contact-item" href="mailto:hello@quantedgesolutions.com">
+                    <span class="c-icon">✉️</span>
+                    <span>
+                        <span class="c-label">Email</span>
+                        <span class="c-value">hello@quantedgesolutions.com</span>
+                    </span>
+                </a>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="disclaimer">
+        <strong>LJGOC2033 Risk Disclosure:</strong> Not financial advice. Trading financial instruments involves substantial risk of loss and is not suitable for all investors. Past and backtested performance does not guarantee future results. All decisions are your own responsibility.
+    </footer>
+
+    <script>
+        (function () {
+            'use strict';
+            const toggle = document.getElementById('themeToggle');
+            const html = document.documentElement;
+            const saved = localStorage.getItem('qesTheme') || 'dark';
+            html.setAttribute('data-theme', saved);
+            toggle.checked = (saved === 'dark');
+            toggle.addEventListener('change', function () {
+                const t = this.checked ? 'dark' : 'light';
+                html.setAttribute('data-theme', t);
+                localStorage.setItem('qesTheme', t);
+            });
+        })();
+    </script>
+</body>
+</html>
